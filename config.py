@@ -1,74 +1,63 @@
 import re
 from os import getenv
-
 from dotenv import load_dotenv
 from pyrogram import filters
 
 load_dotenv()
 
-# Get this value from my.telegram.org/apps
-API_ID = int(getenv("API_ID","22091901"))
-API_HASH = getenv("API_HASH","54b0cd5fb47a40265b197f1a110b20b8")
+def get_int_env(var_name, default):
+    """Read int safely even if blank."""
+    val = getenv(var_name)
+    if not val or not val.isdigit():
+        return int(default)
+    return int(val)
 
-# Get your token from @BotFather on Telegram.
-BOT_TOKEN = getenv("BOT_TOKEN","8032338023:AAHvF1meONrnbAgMkkMTXQuxqVCu7PomcVU")
+# Telegram API
+API_ID = get_int_env("API_ID", 22091901)
+API_HASH = getenv("API_HASH", "54b0cd5fb47a40265b197f1a110b20b8")
 
-# Get your mongo url from cloud.mongodb.com
-MONGO_DB_URI = getenv("MONGO_DB_URI","mongodb+srv://bsdk:betichod@cluster0.fgj1r9z.mongodb.net/?retryWrites=true&w=majority")
+# Bot Token
+BOT_TOKEN = getenv("BOT_TOKEN", "8032338023:AAHvF1meONrnbAgMkkMTXQuxqVCu7PomcVU")
 
+# MongoDB
+MONGO_DB_URI = getenv("MONGO_DB_URI", "mongodb+srv://bsdk:betichod@cluster0.fgj1r9z.mongodb.net/?retryWrites=true&w=majority")
+
+# Limits
 DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", 60))
+LOGGER_ID = get_int_env("LOGGER_ID", -1003189576237)
+OWNER_ID = get_int_env("OWNER_ID", 5811783004)
 
-# Chat id of a group for logging bot's activities
-LOGGER_ID = int(getenv("LOGGER_ID","-1003189576237"))
+# Heroku
+HEROKU_APP_NAME = getenv("HEROKU_APP_NAME", None)
+HEROKU_API_KEY = getenv("HEROKU_API_KEY", None)
 
-# Get this value from @FallenxBot on Telegram by /id
-OWNER_ID = int(getenv("OWNER_ID", 5811783004))
-
-## Fill these variables if you're deploying on heroku.
-# Your heroku app name
-HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
-# Get it from http://dashboard.heroku.com/account
-HEROKU_API_KEY = getenv("HEROKU_API_KEY")
-
-UPSTREAM_REPO = getenv(
-    "UPSTREAM_REPO",
-    "https://github.com/NoxxOP/ShrutixMusic",
-)
+# Repo
+UPSTREAM_REPO = getenv("UPSTREAM_REPO", "https://github.com/NoxxOP/ShrutixMusic")
 UPSTREAM_BRANCH = getenv("UPSTREAM_BRANCH", "main")
-GIT_TOKEN = getenv(
-    "GIT_TOKEN", None
-)  # Fill this variable if your upstream repository is private
+GIT_TOKEN = getenv("GIT_TOKEN", None)
 
+# Support
 SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/shadowmonarchjii")
 SUPPORT_CHAT = getenv("SUPPORT_CHAT", "https://t.me/+md2s35B2X1wxN2M9")
 
-# Set this to True if you want the assistant to automatically leave chats after an interval
-AUTO_LEAVING_ASSISTANT = bool(getenv("AUTO_LEAVING_ASSISTANT", False))
-
-
-# Get this credentials from https://developer.spotify.com/dashboard
+# Spotify
 SPOTIFY_CLIENT_ID = getenv("SPOTIFY_CLIENT_ID", None)
 SPOTIFY_CLIENT_SECRET = getenv("SPOTIFY_CLIENT_SECRET", None)
 
-
-# Maximum limit for fetching playlist's track from youtube, spotify, apple links.
+# Misc
+AUTO_LEAVING_ASSISTANT = getenv("AUTO_LEAVING_ASSISTANT", "False").lower() == "true"
 PLAYLIST_FETCH_LIMIT = int(getenv("PLAYLIST_FETCH_LIMIT", 25))
-
-
-# Telegram audio and video file size limit (in bytes)
 TG_AUDIO_FILESIZE_LIMIT = int(getenv("TG_AUDIO_FILESIZE_LIMIT", 104857600))
 TG_VIDEO_FILESIZE_LIMIT = int(getenv("TG_VIDEO_FILESIZE_LIMIT", 1073741824))
-# Checkout https://www.gbmb.org/mb-to-bytes for converting mb to bytes
 
-
-# Get your pyrogram v2 session from @StringFatherBot on Telegram
-STRING1 = getenv("STRING_SESSION", BQHtwy4AGGA4MHPmIjqksdceV3VZ9geDXnFRldvgPR1rbzrtiO2vuI7BYPV4GFSpIzeXmP86w9UVvJUQ7PtbSZofHnFzh_Jnc9YQtr7IDqkjNEXTSN6XkVn7aUAjpdFbIlZrHXwoVrVevopapdle_e134Ug-AhtzfwvmKkFb6cZ9tGuudsmLf2c6uBG-e1PkGKebj7biojgj5JTZ2bSGbKw9R1Td0lTFXGbJqomsmAtCKS_-iM900Q6r1RaNyY8IKv_lr8I7KUSSlmK-sLqXZHyGbyja6ezSUxGvLPzAdp6zg17Lsyft4a4R2f1FycaxjNUt5-_db8g5qcN3HXXpTm6efusOtwAAAAHwB2FsAA)
-STRING2 = getenv("STRING_SESSION2", BQGzDsUAZa04ZJqK2K2Lpsw8jKAsGzMdJEKxjpRjck3pQEY_UGWvSArZq0IZ8NiJNXifmSatXLT7I-RzPM-ADuyDqLeXb8CMAKgLO-cic1xWASnIKx2WlcnXahIq_7KebyGJwctj_uSoPyY_5qpv3ozxrIhNED8m5JL9rJc_4yk7n447Op-Ppqpqwb0oSGjfsfB2qC5ViYu6MDZco5adk4BdeL7Ze6wsXfJX-NwXDMvYEpQNzDr_fyFgdmPx6fHGW-D4XfhgHdiR-OWgR7FkZCRzCUXzm1PAs8IkLGF8ka6XP4N_kd2H3CiI47pGdccmSv9Nirb0nGh7eH1qDbDsIfvIeu0dlgAAAAHKFlg8AA)
+# String Sessions
+STRING1 = getenv("STRING_SESSION", "BQHtwy4AGGA4MHPmIjqksdceV3VZ9geDXnFRldvgPR1rbzrtiO2vuI7BYPV4GFSpIzeXmP86w9UVvJUQ7PtbSZofHnFzh_Jnc9YQtr7IDqkjNEXTSN6XkVn7aUAjpdFbIlZrHXwoVrVevopapdle_e134Ug-AhtzfwvmKkFb6cZ9tGuudsmLf2c6uBG-e1PkGKebj7biojgj5JTZ2bSGbKw9R1Td0lTFXGbJqomsmAtCKS_-iM900Q6r1RaNyY8IKv_lr8I7KUSSlmK-sLqXZHyGbyja6ezSUxGvLPzAdp6zg17Lsyft4a4R2f1FycaxjNUt5-_db8g5qcN3HXXpTm6efusOtwAAAAHwB2FsAA")
+STRING2 = getenv("STRING_SESSION2", "BQGzDsUAZa04ZJqK2K2Lpsw8jKAsGzMdJEKxjpRjck3pQEY_UGWvSArZq0IZ8NiJNXifmSatXLT7I-RzPM-ADuyDqLeXb8CMAKgLO-cic1xWASnIKx2WlcnXahIq_7KebyGJwctj_uSoPyY_5qpv3ozxrIhNED8m5JL9rJc_4yk7n447Op-Ppqpqwb0oSGjfsfB2qC5ViYu6MDZco5adk4BdeL7Ze6wsXfJX-NwXDMvYEpQNzDr_fyFgdmPx6fHGW-D4XfhgHdiR-OWgR7FkZCRzCUXzm1PAs8IkLGF8ka6XP4N_kd2H3CiI47pGdccmSv9Nirb0nGh7eH1qDbDsIfvIeu0dlgAAAAHKFlg8AA")
 STRING3 = getenv("STRING_SESSION3", None)
 STRING4 = getenv("STRING_SESSION4", None)
 STRING5 = getenv("STRING_SESSION5", None)
 
-
+# Default Data
 BANNED_USERS = filters.user()
 adminlist = {}
 lyrical = {}
@@ -76,13 +65,9 @@ votemode = {}
 autoclean = []
 confirmer = {}
 
-
-START_IMG_URL = getenv(
-    "START_IMG_URL", "https://telegra.ph/file/5c8d3994b93174a57d7f3-608459ffaf02cf2a9b.jpg"
-)
-PING_IMG_URL = getenv(
-    "PING_IMG_URL", "https://telegra.ph/file/c8b09659c837cd9142601-f594bfd29076e79944.jpg"
-)
+# Image URLs
+START_IMG_URL = getenv("START_IMG_URL", "https://telegra.ph/file/5c8d3994b93174a57d7f3-608459ffaf02cf2a9b.jpg")
+PING_IMG_URL = getenv("PING_IMG_URL", "https://telegra.ph/file/c8b09659c837cd9142601-f594bfd29076e79944.jpg")
 PLAYLIST_IMG_URL = "https://te.legra.ph/file/4ec5ae4381dffb039b4ef.jpg"
 STATS_IMG_URL = "https://te.legra.ph/file/e906c2def5afe8a9b9120.jpg"
 TELEGRAM_AUDIO_URL = "https://te.legra.ph/file/6298d377ad3eb46711644.jpg"
@@ -102,15 +87,8 @@ def time_to_seconds(time):
 
 DURATION_LIMIT = int(time_to_seconds(f"{DURATION_LIMIT_MIN}:00"))
 
-
-if SUPPORT_CHANNEL:
-    if not re.match("(?:http|https)://", SUPPORT_CHANNEL):
-        raise SystemExit(
-            "[ERROR] - Your SUPPORT_CHANNEL url is wrong. Please ensure that it starts with https://"
-        )
-
-if SUPPORT_CHAT:
-    if not re.match("(?:http|https)://", SUPPORT_CHAT):
-        raise SystemExit(
-            "[ERROR] - Your SUPPORT_CHAT url is wrong. Please ensure that it starts with https://"
-        )
+# Validate links
+if SUPPORT_CHANNEL and not re.match("(?:http|https)://", SUPPORT_CHANNEL):
+    raise SystemExit("[ERROR] - SUPPORT_CHANNEL must start with https://")
+if SUPPORT_CHAT and not re.match("(?:http|https)://", SUPPORT_CHAT):
+    raise SystemExit("[ERROR] - SUPPORT_CHAT must start with https://")
